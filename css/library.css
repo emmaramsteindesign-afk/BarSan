@@ -15,8 +15,8 @@
   /* texte */
   --ink:      #1C1814;
   --ink-alt:  #3D3529;
-  --muted:    #7A6E5F;
-  --muted-lt: #A89D8E;
+--muted:    #5C5248;   /* était #7A6E5F — ratio ~5.2:1 sur --bg ✅ */
+--muted-lt: #7A6E5F;   /* était #A89D8E — ratio ~3.5:1, utilise désormais l'ancien --muted ✅ */
 
   /* section sombre */
   --dark:         #1A1510;
@@ -593,8 +593,10 @@ input[type=range]:hover::-webkit-slider-thumb{background:#fff;transform:scale(1.
 }
 
 .cal-num{
-  font-size:11px;color:var(--muted);font-weight:300;
-  position:relative;z-index:2;
+
+  font-size: 11px;
+  color: var(--ink-alt);  /* était --muted, #3D3529 = ratio ~7:1 ✅ */
+  font-weight: 300;
 }
 .has-event .cal-num{color:var(--ink);font-weight:400}
 
@@ -1211,7 +1213,7 @@ input[type=range]:hover::-webkit-slider-thumb{background:#fff;transform:scale(1.
   /* curseur blanc dans cette section */
   cursor: none;
 }
-#drinks .s-label  { color: rgba(255,255,255,.3); }
+#drinks .s-label { color: rgba(255,255,255,.55); }  /* était .3 et .35 ❌ */
 #drinks .s-title  { color: var(--bg); }
 #drinks .draw-line { background: var(--dark-border); }
 
