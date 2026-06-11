@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bar·San — Chiang Mai</title>
-<link rel="stylesheet" href="./css/library.css">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bar·San — Chiang Mai</title>
 
-</style>
+  <!-- Preload font -->
+  <link rel="preload" href="assets/fonts/Jost-VariableFont_wght.ttf"
+        as="font" type="font/ttf" crossorigin>
+
+  <!-- CSS — une seule fois, chemin correct -->
+  <link rel="stylesheet" href="assets/css/library.css">
+
+
 </head>
 <body>
 
@@ -33,8 +38,10 @@
   </button>
 </nav>
 <section id="hero">
-  <img class="hero-bg" src="./assets/images/HeroBg.avif" alt="">
-
+<img class="hero-bg" src="assets/images/HeroBg.avif"
+     fetchpriority="high"
+     decoding="async"
+     alt="">
   <div class="mixo" style="left:26%;bottom:52%">
     <div class="mixo-dot"></div>
     <div class="mixo-reveal"><div class="mixo-inner">
