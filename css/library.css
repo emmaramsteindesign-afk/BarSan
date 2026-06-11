@@ -533,7 +533,7 @@ input[type=range]:hover::-webkit-slider-thumb{background:#fff;transform:scale(1.
   writing-mode:vertical-rl;transform:rotate(180deg);
   margin-right:3rem;margin-top:-.5rem;
   color:var(--ink);line-height:1;
-  flex-shrink:0;opacity:.18;
+  flex-shrink:0;opacity:.35;
 }
 .cal-main{flex:1}
 
