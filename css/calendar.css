@@ -185,3 +185,34 @@
   max-height: 60px;
   opacity: 1;
 }
+@media (max-width: 768px) {
+  .events-layout {
+    flex-direction: column;
+    overflow: hidden;  /* ← contient le débordement du titre */
+    width: 100%;
+  }
+
+  /* Cache complètement le titre rotatif sur mobile */
+  .cal-rotated {
+    display: none;
+  }
+
+  .cal-main {
+    width: 100%;
+    min-width: 0;  /* ← crucial : empêche flex item de déborder */
+  }
+
+  .cal-grid {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cal-day {
+    min-height: 52px;
+    padding: .35rem;
+  }
+
+  .cal-event-desc {
+    display: none;
+  }
+}

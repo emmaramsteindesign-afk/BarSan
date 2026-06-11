@@ -169,7 +169,6 @@
   .bs-result-top {
     display: block;
     order: 1;
-    padding: 36px 36px 0;
     border-bottom: 1px solid var(--line);
   }
 
@@ -182,7 +181,6 @@
   .bs-panel.bs-right {
     order: 3;
     border-left: none;
-    padding: 36px 36px 48px;
   }
 
   /* cache le nom/type dans bs-right en mobile puisqu'il est remonté */

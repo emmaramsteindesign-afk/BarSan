@@ -160,6 +160,28 @@ function buildCal(y, m) {
     grid.appendChild(cell);
   }
 }
+function attachStretch(cell) {
+  // Desktop : hover
+  cell.addEventListener('mouseenter', () => {
+    if (isTouch()) return;
+    expandCell(cell);
+    document.body.classList.add('cursor-hover');
+  });
+  cell.addEventListener('mouseleave', () => {
+    if (isTouch()) return;
+    cell.classList.remove('is-hovered');
+    document.body.classList.remove('cursor-hover');
+    collapseGrid();
+  });
+
+  // Mobile : tap toggle
+  cell.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const already = cell.classList.contains('is-hovered');
+    collapseGrid();
+    if (!already) expandCell(cell);
+  }, { passive: false });
+}
 
 // Fermeture au tap extérieur (touch uniquement)
 document.addEventListener('touchstart', (e) => {
@@ -647,76 +669,119 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
 
 
 //FOOD
-//FOOD
-
 {
   const foodCols   = document.getElementById('foodCols');
   const foodColEls = [...foodCols.querySelectorAll('.food-col')];
   const COL_N      = foodColEls.length;
   const FOOD_COL_BASE   = 1;
   const FOOD_COL_EXPAND = 2.0;
+  
+  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+  
   const fCols = {};
   for (let i = 0; i < COL_N; i++) fCols[`c${i}`] = FOOD_COL_BASE;
-
+  
   function applyFoodGrid() {
     const vals = Array.from({ length: COL_N }, (_, i) => `${fCols['c' + i]}fr`).join(' ');
     foodCols.style.gridTemplateColumns = vals;
   }
-
+  
   function expandFoodCol(idx) {
     const col   = foodColEls[idx];
     const items = col.querySelectorAll('.food-item');
     col.classList.add('is-expanded');
-    const other = (COL_N * FOOD_COL_BASE - FOOD_COL_EXPAND) / (COL_N - 1);
-    const target = {};
-    for (let i = 0; i < COL_N; i++)
-      target[`c${i}`] = i === idx ? FOOD_COL_EXPAND : other;
-    gsap.killTweensOf(fCols);
-    gsap.to(fCols, { ...target, duration: .4, ease: 'power2.out', overwrite: true, onUpdate: applyFoodGrid });
-    gsap.to(items, { opacity: 1, y: 0, duration: .4, stagger: .07, ease: 'power3.out' });
+    
+    // Sur desktop, expand avec animation
+    if (!isMobile()) {
+      const other = (COL_N * FOOD_COL_BASE - FOOD_COL_EXPAND) / (COL_N - 1);
+      const target = {};
+      for (let i = 0; i < COL_N; i++)
+        target[`c${i}`] = i === idx ? FOOD_COL_EXPAND : other;
+      gsap.killTweensOf(fCols);
+      gsap.to(fCols, { ...target, duration: .4, ease: 'power2.out', overwrite: true, onUpdate: applyFoodGrid });
+      gsap.to(items, { opacity: 1, y: 0, duration: .4, stagger: .07, ease: 'power3.out' });
+    } else {
+      // Sur mobile, juste montrer les items
+      gsap.to(items, { opacity: 1, duration: .3, stagger: .05, ease: 'power2.out' });
+    }
   }
-
+  
   function collapseFoodAll() {
     foodColEls.forEach((col) => {
       col.classList.remove('is-expanded');
-      gsap.to(col.querySelectorAll('.food-item'), { opacity: 0, y: 8, duration: .3, ease: 'power2.in' });
+      if (!isMobile()) {
+        gsap.to(col.querySelectorAll('.food-item'), { opacity: 0, y: 8, duration: .3, ease: 'power2.in' });
+      }
     });
-    const reset = {};
-    for (let i = 0; i < COL_N; i++) reset[`c${i}`] = FOOD_COL_BASE;
-    gsap.killTweensOf(fCols);
-    gsap.to(fCols, { ...reset, duration: .5, ease: 'power3.inOut', overwrite: true, onUpdate: applyFoodGrid });
+    
+    if (!isMobile()) {
+      const reset = {};
+      for (let i = 0; i < COL_N; i++) reset[`c${i}`] = FOOD_COL_BASE;
+      gsap.killTweensOf(fCols);
+      gsap.to(fCols, { ...reset, duration: .5, ease: 'power3.inOut', overwrite: true, onUpdate: applyFoodGrid });
+    }
   }
-
+  
   foodColEls.forEach((col, idx) => {
     const label = col.querySelector('.food-col-label');
-
-    if (isTouch()) {
-      label.addEventListener('touchstart', (e) => {
-        e.preventDefault();
+    
+    label.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      if (isMobile()) {
+        // Toggle sur mobile
+        const isExpanded = col.classList.contains('is-expanded');
+        if (isExpanded) {
+          col.classList.remove('is-expanded');
+          gsap.to(col.querySelectorAll('.food-item'), { 
+            opacity: 0, 
+            y: 8, 
+            duration: .2, 
+            ease: 'power2.in',
+            pointerEvents: 'none'
+          });
+        } else {
+          col.classList.add('is-expanded');
+          gsap.to(col.querySelectorAll('.food-item'), { 
+            opacity: 1, 
+            y: 0, 
+            duration: .3, 
+            stagger: .05, 
+            ease: 'power2.out',
+            pointerEvents: 'auto'
+          });
+        }
+      } else {
+        // Comportement desktop
         const already = col.classList.contains('is-expanded');
         collapseFoodAll();
         if (!already) expandFoodCol(idx);
-      }, { passive: false });
-    } else {
+      }
+    });
+    
+    // Comportement desktop au hover
+    if (!isMobile()) {
       label.addEventListener('mouseenter', () => {
         document.body.classList.add('cursor-hover');
         collapseFoodAll();
         expandFoodCol(idx);
       });
+      
       label.addEventListener('mouseleave', () => {
         document.body.classList.remove('cursor-hover');
         collapseFoodAll();
       });
     }
   });
-
-  // Fermeture au tap extérieur
-  document.addEventListener('touchstart', (e) => {
-    if (!e.target.closest('.food-col')) collapseFoodAll();
+  
+  // Fermeture au tap/click extérieur (mobile uniquement)
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.food-col') && isMobile()) {
+      collapseFoodAll();
+    }
   }, { passive: true });
+  
 }
-
-
 
 //FOOTER
 

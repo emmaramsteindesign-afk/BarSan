@@ -312,7 +312,6 @@
   .bs-panel.bs-left {
     border-right: none;
     border-bottom: 1px solid var(--line);
-    padding: 48px 36px;
   }
 
   .bs-panel.bs-center {
@@ -322,7 +321,6 @@
 
   .bs-panel.bs-right {
     border-left: none;
-    padding: 48px 36px;
   }
 
   #flavorChart {
@@ -380,9 +378,9 @@
 
   .bs-panel.bs-right {
     border-left: none;
-    padding: 0 36px 48px;
     display: flex;
     flex-direction: column;
+    padding: 0px 0 0 0; /* pas de padding gauche/droite en mobile */
   }
 
   /* nom + type en premier */
@@ -412,13 +410,11 @@
 
   .bs-panel.bs-right {
     border-left: none;
-    padding: 0 36px;
     display: flex;
     flex-direction: column;
   }
 
   .bs-result-top {
-    padding: 36px 0 0;
     border-bottom: none;
   }
 
@@ -433,7 +429,6 @@
   .bs-result-top  { order: 1; }
   .bs-result-bottom {
     order: 3;
-    padding: 36px 0 48px;
   }
 
   .bs-result {
@@ -443,5 +438,6 @@
   #flavorChart {
     width: 100%;
     max-width: 320px;
+    padding: 0 0px; /* padding horizontal pour le flavor chart en mobile */
   }
 }

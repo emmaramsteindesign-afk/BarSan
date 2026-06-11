@@ -1,5 +1,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 
+
+
+
+
 :root {
   /* surfaces */
   --bg:       #F2EDE4;
@@ -21,6 +25,20 @@
   /* section events */
   --events-bg: #F0EAE0;
 }
+
+
+
+
+@font-face {
+  font-family: 'Jost';
+  src: url('../assets/fonts/Jost-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 #loader {
   position: fixed;
   inset: 0;
@@ -62,7 +80,7 @@ body::after{
 }
 
 /* section skeleton */
-section{padding:8rem 3rem;position:relative}
+section{padding:4rem 3rem;position:relative}
 
 .s-label{
   font-size:10px;letter-spacing:.3em;text-transform:uppercase;
@@ -266,7 +284,21 @@ section{padding:8rem 3rem;position:relative}
 @media(max-width:768px){
   nav,section,footer{padding-left:1.5rem;padding-right:1.5rem}
   .bar-wrap,.find-layout,.drinks-list{grid-template-columns:1fr}
-  .photo-grid{grid-template-columns:1fr;grid-template-rows:auto}
+@media(max-width:768px){
+  nav,section,footer{padding-left:1.5rem;padding-right:1.5rem}
+  .bar-wrap,.find-layout,.drinks-list{grid-template-columns:1fr}
+  
+  /* ← Photo grid RESTE 2 colonnes */
+.photo-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:260px 200px;
+  gap:3px;
+}
+  
+  .footer-bottom{flex-direction:column;gap:2rem;align-items:flex-start}
+  .footer-links{align-items:flex-start}
+}
   .photo-cell:first-child{grid-row:auto}
   .footer-bottom{flex-direction:column;gap:2rem;align-items:flex-start}
   .footer-links{align-items:flex-start}
@@ -385,8 +417,58 @@ input[type=range]:hover::-webkit-slider-thumb{background:#fff;transform:scale(1.
 }
 #df-canvas-wrap canvas{display:block;width:100%!important;height:100%!important;}
 
-@media(max-width:900px){
-  .drinks-finder{grid-template-columns:1fr;}
-  .df-left{border-right:none;border-bottom:.5px solid rgba(255,255,255,.08);padding:2rem 0;}
-  .df-right{min-height:360px;}
+
+@media (max-width: 1200px) {
+  .barsan-visualizer {
+    grid-template-columns: 1fr;
+    padding: 0;
+    min-height: auto;
+  }
+
+  .bs-center-right {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bs-panel.bs-left {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding: 0px 0 0 0;  /* ← pas de padding gauche/droite */
+  }
+
+  .bs-result-top {
+    order: 1;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bs-panel.bs-center {
+    order: 2;
+    min-height: 320px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 0;
+  }
+
+  .bs-panel.bs-right {
+    order: 3;
+    border-left: none; }
+
+  .bs-result {
+    display: block;
+  }
+
+  .bs-result-desktop {
+    display: none;
+  }
+
+  .bs-r-profile {
+    margin: 0 -36px;  /* ← déborde du parent */
+    padding: 0 36px;  /* ← padding interne */
+  }
+
+  #flavorChart {
+    width: 100%;
+    max-width: none;  /* ← fullwidth */
+  }
 }
