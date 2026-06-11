@@ -1,0 +1,210 @@
+/* ─── Drinks accordion ─── */
+
+#drinks {
+  background: var(--dark);
+  color: var(--bg);
+  /* curseur blanc dans cette section */
+  cursor: none;
+}
+#drinks .s-label  { color: rgba(255,255,255,.3); }
+#drinks .s-title  { color: var(--bg); }
+#drinks .draw-line { background: var(--dark-border); }
+
+/* ── grille accordéon ── */
+.drinks-accordion {
+  display: flex;
+  height: 70vh;
+  min-height: 480px;
+  max-height: 700px;
+  margin-top: 4rem;
+  gap: 0;
+  overflow: hidden;
+  border-top: .5px solid var(--dark-border);
+  border-bottom: .5px solid var(--dark-border);
+}
+
+/* ── colonne ── */
+.da-col {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-right: .5px solid rgba(255,255,255,.07);
+  cursor: none;
+  transition: flex .9s cubic-bezier(.77,0,.18,1);
+}
+.da-col:last-child { border-right: none; }
+
+/* au hover, la colonne active prend ~55% */
+.drinks-accordion:has(.da-col:hover) .da-col          { flex: 0.18; }
+.drinks-accordion:has(.da-col:hover) .da-col:hover    { flex: 4; }
+
+/* ── image de fond ── */
+.da-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(.5) brightness(.45);
+  transform: scale(1.04);
+  transition:
+    filter .9s cubic-bezier(.77,0,.18,1),
+    transform .9s cubic-bezier(.77,0,.18,1);
+  /* fallback couleur si pas d'image */
+  background-color: #1e1a14;
+}
+.da-col:hover .da-img {
+  filter: saturate(.85) brightness(.6);
+  transform: scale(1);
+}
+
+/* ── contenu ── */
+.da-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  pointer-events: none;
+}
+
+/* numéro — toujours visible, pivoté */
+.da-number {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  font-size: 9px;
+  letter-spacing: .3em;
+  color: rgba(255,255,255,.2);
+  white-space: nowrap;
+  transition: opacity .4s;
+}
+.da-col:hover .da-number { opacity: 0; }
+
+/* infos — masquées par défaut, révélées au hover */
+.da-info {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity .5s cubic-bezier(.22,1,.36,1) .15s,
+    transform .6s cubic-bezier(.22,1,.36,1) .15s;
+}
+.da-col:hover .da-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.da-name {
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 100;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: .5rem;
+  white-space: nowrap;
+}
+.da-type {
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-bottom: 1.4rem;
+}
+.da-ings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem .6rem;
+}
+.da-ings span {
+  font-size: 11px;
+  font-weight: 200;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.45);
+  padding-bottom: .15rem;
+  border-bottom: .5px solid rgba(255,255,255,.12);
+}
+
+/* ── curseur blanc dans la section dark ── */
+#drinks .cursor,
+#drinks ~ .cursor { /* au cas où le curseur est global */ }
+
+/* ── mobile : colonnes empilées ── */
+@media (max-width: 768px) {
+  .drinks-accordion {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+  }
+  .da-col {
+    flex: none !important;
+    height: 200px;
+    border-right: none;
+    border-bottom: .5px solid rgba(255,255,255,.07);
+  }
+  .da-col:last-child { border-bottom: none; }
+  .drinks-accordion:has(.da-col:hover) .da-col       { height: 200px; }
+  .drinks-accordion:has(.da-col:hover) .da-col:hover { height: 340px; }
+  .da-number { transform: translateX(-50%); }
+}
+
+/* Desktop — bs-result-top caché, tout est dans bs-right */
+.bs-result-top {
+  display: none;
+}
+
+.bs-center-right {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 0;
+}
+
+@media (max-width: 1200px) {
+  .bs-center-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* affiche le bloc nom/type au dessus du verre */
+  .bs-result-top {
+    display: block;
+    order: 1;
+    padding: 36px 36px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bs-panel.bs-center {
+    order: 2;
+    min-height: 320px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bs-panel.bs-right {
+    order: 3;
+    border-left: none;
+    padding: 36px 36px 48px;
+  }
+
+  /* cache le nom/type dans bs-right en mobile puisqu'il est remonté */
+  #resultBlock .bs-r-label,
+  #resultBlock .bs-r-name,
+  #resultBlock .bs-r-type {
+    display: none;
+  }
+
+  #flavorChart {
+    width: 100%;
+    max-width: 320px;
+  }
+}@media (max-width: 1200px) {
+  .bs-panel.bs-center {
+    order: 2;
+    height: 420px;
+    min-height: unset;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+  }
+}

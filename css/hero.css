@@ -1,0 +1,153 @@
+.hero-bg,
+.hero-fg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+}
+.hero-bg{z-index:1;opacity:.65}
+.hero-fg{z-index:3;pointer-events:none}
+/* center content */
+.hero-content{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  gap:4rem;flex-wrap:wrap;
+  padding-bottom:40vh;
+}
+.hero-logo{
+  width:min(600px,90vw);
+  height:auto;
+  opacity:.85;
+}
+.hero-info-text{
+  max-width:210px;
+  font-size:12px;line-height:1.8;letter-spacing:.05em;
+  color:rgba(255,255,255,.75);font-weight:200;
+}
+.hero-info-text a{color:rgba(255,255,255,.55);text-decoration:none}
+/* captions — space-between distribution */
+.hero-captions{
+  position:absolute;
+  bottom:3rem;
+  left:50%;transform:translateX(-50%);
+  z-index:4;
+  display:flex;
+  justify-content:space-between;
+  width:90%;
+  max-width:800px;
+  white-space:nowrap;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+}
+/* mixologist hotspots */
+.mixo{
+  position:absolute;z-index:10;cursor:none;
+}
+.mixo-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.7);
+  position:relative;
+}
+.mixo-dot::after{
+  content:'';
+  position:absolute;inset:-5px;
+  border-radius:50%;
+  border:.5px solid rgba(255,255,255,.35);
+  animation:pulse 2.5s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:.6}
+  50%{transform:scale(1.6);opacity:0}
+}
+/* reveal card — stretch open */
+.mixo-reveal{
+  position:absolute;
+  top:calc(100% + 12px);
+  left:50%;transform:translateX(-50%);
+  background:rgba(17,14,10,.92);
+  border:.5px solid rgba(255,255,255,.15);
+  overflow:hidden;
+  white-space:nowrap;
+  width:0;height:3px;
+  display:flex;align-items:center;justify-content:center;
+  transition:
+    width .32s cubic-bezier(.4,0,.2,1),
+    height .26s cubic-bezier(.4,0,.2,1) .32s;
+  pointer-events:none;
+  z-index:100;
+}
+.mixo:hover .mixo-reveal{width:180px;height:60px}
+.mixo-inner{
+  opacity:0;text-align:center;padding:0 1rem;
+  transition:opacity .22s ease .58s;
+}
+.mixo:hover .mixo-inner{opacity:1}
+.mixo-name{font-size:13px;font-weight:200;letter-spacing:.08em;color:#fff;display:block}
+.mixo-role{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);display:block;margin-top:2px}
+@media(max-width:900px){
+  /* Hide mixologist points on mobile */
+  .mixo{
+    display:none;
+  }
+  /* Raise hero content higher */
+  .hero-content{
+    align-items:flex-start;
+    padding-top:12vh;
+    flex-direction:column;
+    gap:2rem;
+  }
+  .hero-logo{
+    width:min(320px,80vw);
+  }
+  .hero-info-text{
+    font-size:11px;
+    max-width:200px;
+  }
+  .hero-captions{
+    bottom:2rem;
+    gap:0.5rem;
+    width:90%;
+    font-size:9px;
+  }
+  .hero-content {
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    padding-left: 24px;
+  }
+  /* Mettre le logo après le texte dans le flux visuel */
+  .hero-logo {
+    order: 2;
+  }
+  .hero-info-text {
+    order: 1;
+  }
+}
+
+#hero{
+  position:relative;height:100vh;overflow:hidden;
+  background:var(--dark);
+}
+
+.hero-bg {
+  position: absolute;
+  top: -15%;
+  left: 0;
+  width: 100%;
+  height: 130%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: .65;
+  will-change: transform;
+}
+
+.hero-fg {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  z-index: 3;
+  pointer-events: none;
+  will-change: transform;
+}

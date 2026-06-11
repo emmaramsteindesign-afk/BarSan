@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bar·San — Chiang Mai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/food.css">
+<link rel="stylesheet" href="./css/nav.css">
+<link rel="stylesheet" href="./css/hero.css">
+<link rel="stylesheet" href="./css/sections.css">
+<link rel="stylesheet" href="./css/drinks.css">
+<link rel="stylesheet" href="./css/drinks-visualizer.css">
+<link rel="stylesheet" href="./css/calendar.css">
+<link rel="stylesheet" href="./css/animations.css">
+<style>
+
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div id="loader-rect"></div>
+</div>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="./assets/images/BarSanLogoSmol.svg" alt="BarSan">
+  </a>
+  <div class="nav-r">
+    <a href="#bar">The bar</a>
+    <a href="#drinks">Drinks</a>
+    <a href="#events">Events</a>
+    <a href="https://ig.me/m/bar.san.chiangmai" target="_blank" class="btn-res">Reserve</a>
+  </div>
+  <button class="nav-burger" id="navBurger" aria-label="Menu">
+    <span></span><span></span>
+  </button>
+</nav>
+<section id="hero">
+  <img class="hero-bg" src="./assets/images/HeroBg.webp" alt="">
+
+  <div class="mixo" style="left:26%;bottom:52%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Nattawut Chai</span>
+      <span class="mixo-role">Bar Manager</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:35%;bottom:49%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Sorn Pattana</span>
+      <span class="mixo-role">Mixologist</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:40%;bottom:47%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Arisa Tanaka</span>
+      <span class="mixo-role">Head Bartender</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:44%;bottom:43%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Yuki Mori</span>
+      <span class="mixo-role">Mixologist</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:50%;bottom:48%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Lin Chen</span>
+      <span class="mixo-role">Head Bartender</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:57%;bottom:47%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Kenji Watanabe</span>
+      <span class="mixo-role">Mixologist</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:62%;bottom:50%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Pim Srisuk</span>
+      <span class="mixo-role">Bartender</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:69%;bottom:48%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Ravi Chandran</span>
+      <span class="mixo-role">Senior Bartender</span>
+    </div></div>
+  </div>
+
+  <div class="mixo" style="left:72%;bottom:51%">
+    <div class="mixo-dot"></div>
+    <div class="mixo-reveal"><div class="mixo-inner">
+      <span class="mixo-name">Som Kaew</span>
+      <span class="mixo-role">Bartender</span>
+    </div></div>
+  </div>
+
+  <div class="hero-content">
+    <img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo">
+    <div class="hero-info-text">
+      73/1 Charoen Prathet Rd, Chiang Mai<br>
+      +66 81 914 6433<br>
+      Every day 6 PM – midnight<br>
+      <a href="https://instagram.com/bar.san.chiangmai">@bar.san.chiangmai</a>
+    </div>
+  </div>
+
+  <div class="hero-captions">
+    <span>Craft cocktails.</span>
+    <span>Quiet evenings.</span>
+    <span>Chiang Mai.</span>
+  </div>
+
+  <img class="hero-fg" src="./assets/images/HeroFg.webp" alt="">
+</section>
+
+<!-- BAR -->
+<section id="bar">
+  <div class="draw-line js-line"></div>
+  <span class="s-label js-fade">The bar</span>
+  <div class="bar-wrap">
+    <div class="bar-text-col">
+      <h2 class="s-title js-fade">A small<br>place.</h2>
+      <p class="js-fade">
+        We opened on Charoen Prathet Road.<br>
+        Two floors, dim light, good music.<br>
+        Cocktails made with care,<br>
+        some Japanese, some not.<br>
+        Come at six. Stay as long as you like.
+      </p>
+    </div>
+    <div class="photo-grid js-fade">
+      <div class="photo-cell"><img src="./assets/images/bar-01.webp" alt="Bar interior"></div>
+      <div class="photo-cell"><img src="./assets/images/bar-02.webp" alt="Cocktail close-up"></div>
+      <div class="photo-cell"><img src="./assets/images/bar-03.webp" alt="Bar at night"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DRINKS -->
+<section id="drinks">
+  <div class="draw-line js-line"></div>
+  <span class="s-label js-fade">The drinks</span>
+  
+  <div class="barsan-visualizer">
+    <aside class="bs-panel bs-left">
+      <div class="bs-label">Your profile</div>
+      <div class="bs-sliders">
+        <div class="bs-sl-row">
+          <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-0">Sweet</span><span class="bs-sl-lbl" id="lr-0">Sour</span></div>
+          <div class="bs-sl-track"><input type="range" id="sl-0" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-0"></div></div>
+        </div>
+        <div class="bs-sl-row">
+          <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-1">Mineral</span><span class="bs-sl-lbl" id="lr-1">Fruity</span></div>
+          <div class="bs-sl-track"><input type="range" id="sl-1" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-1"></div></div>
+        </div>
+        <div class="bs-sl-row">
+          <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-2">Simple</span><span class="bs-sl-lbl" id="lr-2">Complex</span></div>
+          <div class="bs-sl-track"><input type="range" id="sl-2" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-2"></div></div>
+        </div>
+      </div>
+      <button class="bs-btn-random" id="btnRandom">Surprise me →</button>
+      <div class="bs-status" id="statusMsg"></div>
+    </aside>
+
+    <div class="bs-center-right">
+      <div class="bs-result-top">
+        <div class="bs-r-label">Tonight's pick</div>
+        <div class="bs-r-name" id="rName-mobile">—</div>
+        <div class="bs-r-type" id="rType-mobile">—</div>
+      </div>
+
+      <main class="bs-panel bs-center" id="centerPanel">
+        <div class="bs-scan-line" id="scanLine"></div>
+        <canvas id="glassCanvas"></canvas>
+      </main>
+
+      <aside class="bs-panel bs-right">
+        <div class="bs-idle" id="rIdle">Move the sliders<br>to find your drink.</div>
+        <div class="bs-result" id="resultBlock">
+          <div class="bs-result-desktop">
+            <div class="bs-r-label">Tonight's pick</div>
+            <div class="bs-r-name" id="rName">—</div>
+            <div class="bs-r-type" id="rType">—</div>
+          </div>
+          <div class="bs-r-div"></div>
+          <div class="bs-r-ingr-label">Ingredients</div>
+          <div class="bs-r-ingr-list" id="rIngr"></div>
+          <div class="bs-r-profile">
+            <div class="bs-rp-label">Flavor profile</div>
+            <svg id="flavorChart" viewBox="0 0 188 148" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD -->
+<section id="food">
+  <div class="draw-line js-line"></div>
+  <span class="s-label js-fade">The food</span>
+  <h2 class="s-title js-fade">Small bites.<br>Honest ingredients.</h2>
+  <div class="food-cols" id="foodCols">
+    <div class="food-col" data-col="0">
+      <span class="food-col-label">Cold &amp; raw</span>
+      <div class="food-item"><span class="fr-name">Beef tartare on toast</span><span class="fr-tag">Cold</span></div>
+      <div class="food-item"><span class="fr-name">Crudo of the day</span><span class="fr-tag">Raw</span></div>
+    </div>
+    <div class="food-col" data-col="1">
+      <span class="food-col-label">Hot</span>
+      <div class="food-item"><span class="fr-name">Steak &amp; gravy</span><span class="fr-tag">Hot</span></div>
+      <div class="food-item"><span class="fr-name">Fries</span><span class="fr-tag">Hot</span></div>
+      <div class="food-item"><span class="fr-name">Crunchy corn ribs</span><span class="fr-tag">Vegetarian</span></div>
+    </div>
+    <div class="food-col" data-col="2">
+      <span class="food-col-label">Sweet</span>
+      <div class="food-item"><span class="fr-name">Blueberry cheesecake</span><span class="fr-tag">Dessert</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="draw-line js-line"></div>
+  <div class="events-layout">
+    <div class="cal-rotated js-fade" id="calMonthBig">JUNE</div>
+    <div class="cal-main">
+      <div class="cal-controls">
+        <div>
+          <span class="s-label" style="margin-bottom:.4rem">Events</span>
+          <h2 class="s-title js-fade" style="margin-bottom:0">What's<br>on.</h2>
+        </div>
+        <div class="cal-btns">
+          <button id="prevM">← Prev</button>
+          <button id="nextM">Next →</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid">
+        <div class="cal-hd">Sun</div>
+        <div class="cal-hd">Mon</div>
+        <div class="cal-hd">Tue</div>
+        <div class="cal-hd">Wed</div>
+        <div class="cal-hd">Thu</div>
+        <div class="cal-hd">Fri</div>
+        <div class="cal-hd">Sat</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-lines">
+    <div class="footer-row">
+      <div class="footer-line footer-line--left"></div>
+      <a href="https://instagram.com/bar.san.chiangmai" class="footer-info">@bar.san.chiangmai</a>
+      <div class="footer-line footer-line--right footer-line--tiny"></div>
+    </div>
+    <div class="footer-row">
+      <div class="footer-line footer-line--left footer-line--tiny"></div>
+      <a href="tel:+66819146433" class="footer-info">+66 81 914 6433</a>
+      <div class="footer-line footer-line--right"></div>
+    </div>
+    <div class="footer-row">
+      <div class="footer-line footer-line--left"></div>
+      <a href="https://ig.me/m/bar.san.chiangmai" class="footer-info">Reserve a table</a>
+      <div class="footer-line footer-line--right footer-line--tiny"></div>
+    </div>
+  </div>
+  <img src="assets/images/BarSanSuperSmol.svg" alt="Bar·San" class="footer-logo">
+</footer>
+
+<!-- GSAP — chargé en premier, avant tous les autres scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<!-- Loader — juste après GSAP -->
+<script src="./js/loader.js"></script>
+<!-- Reste des scripts -->
+<script src="./js/cocktails.js"></script>
+<script src="./js/glasses.js"></script>
+<script src="./js/cursor.js"></script>
+<script src="./js/nav.js"></script>
+<script src="./js/footer.js"></script>
+<script src="./js/hero.js"></script>
+<script src="./js/reveals.js"></script>
+<script src="./js/food.js"></script>
+<script src="./js/drinks-visualizer.js"></script>
+<script src="./js/calendar.js"></script>
+<script src="./js/cursor-dark-patch.js"></script>
+</body>
+</html>
