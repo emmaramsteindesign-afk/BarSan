@@ -1,19 +1,22 @@
+// Ajouter en tête de fichier — utilisé par tous les patches
+const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
 //CALENDAR
 
-
+//CALENDAR
 
 const MONTHS = ['January','February','March','April','May','June',
   'July','August','September','October','November','December'];
 
 const events = {
-  '2026-6-4':  { name: 'DJ Night — House & Nu-Jazz',  desc: 'Local DJ sets blending house and nu-jazz until midnight. No cover charge.', img: './assets/images/bar-01.webp' },
-  '2026-6-9':  { name: 'Cocktail Tasting Menu',        desc: 'A guided 5-cocktail journey through seasonal ingredients. Booking required.', img: './assets/images/bar-02.webp' },
-  '2026-6-19': { name: 'Live Jazz Quartet',             desc: 'Four musicians, one evening. Standards and originals from 8 PM.', img: './assets/images/bar-03.webp' },
-  '2026-6-21': { name: 'Mezcal & Fire',                 desc: 'A special menu built around smoked spirits and Thai chili. Limited seats.', img: './assets/images/bar-01.webp' },
-  '2026-7-2':  { name: 'Acoustic Duo',                  desc: 'Intimate acoustic set. Arrive early, it fills up fast.', img: './assets/images/bar-02.webp' },
-  '2026-7-8':  { name: "Bartender's Special",           desc: 'One night, one menu. Our head bartender takes over completely.', img: './assets/images/bar-03.webp' },
-  '2026-7-15': { name: 'Sake & Umami',                  desc: 'Curated sake pairings with small Japanese-inspired bites.', img: './assets/images/bar-01.webp' },
-  '2026-7-21': { name: 'Independence Night',            desc: 'Open bar format, live music, until 1 AM.', img: './assets/images/bar-02.webp' },
+  '2026-6-4':  { name: 'DJ Night — House & Nu-Jazz',  desc: 'Local DJ sets blending house and nu-jazz until midnight. No cover charge.', img: './assets/images/bar-01.avif' },
+  '2026-6-9':  { name: 'Cocktail Tasting Menu',        desc: 'A guided 5-cocktail journey through seasonal ingredients. Booking required.', img: './assets/images/bar-02.avif' },
+  '2026-6-19': { name: 'Live Jazz Quartet',             desc: 'Four musicians, one evening. Standards and originals from 8 PM.', img: './assets/images/bar-03.avif' },
+  '2026-6-21': { name: 'Mezcal & Fire',                 desc: 'A special menu built around smoked spirits and Thai chili. Limited seats.', img: './assets/images/bar-01.avif' },
+  '2026-7-2':  { name: 'Acoustic Duo',                  desc: 'Intimate acoustic set. Arrive early, it fills up fast.', img: './assets/images/bar-02.avif' },
+  '2026-7-8':  { name: "Bartender's Special",           desc: 'One night, one menu. Our head bartender takes over completely.', img: './assets/images/bar-03.avif' },
+  '2026-7-15': { name: 'Sake & Umami',                  desc: 'Curated sake pairings with small Japanese-inspired bites.', img: './assets/images/bar-01.avif' },
+  '2026-7-21': { name: 'Independence Night',            desc: 'Open bar format, live music, until 1 AM.', img: './assets/images/bar-02.avif' },
 };
 
 let cY = 2026, cM = 5;
@@ -27,6 +30,8 @@ const ROW_EXPAND = 130;
 const cols = {};
 const rows = {};
 let numRows = 0;
+
+const isTouch = () => window.matchMedia('(hover: none)').matches;
 
 function resetProxy() {
   for (let i = 0; i < COL_COUNT; i++) cols[`c${i}`] = COL_BASE;
@@ -48,44 +53,54 @@ function getCellSlot(cell) {
   return { col: absSlot % 7, row: Math.floor(absSlot / 7) };
 }
 
+function expandCell(cell) {
+  cell.classList.add('is-hovered');
+  const { col, row } = getCellSlot(cell);
+  const totalFr = COL_COUNT * COL_BASE;
+  const otherFr = (totalFr - COL_EXPAND) / (COL_COUNT - 1);
+  const tCols = {}, tRows = {};
+  for (let i = 0; i < COL_COUNT; i++)
+    tCols[`c${i}`] = i === col ? COL_EXPAND : otherFr;
+  const freed  = ROW_EXPAND - ROW_BASE_H;
+  const shrink = numRows > 1 ? freed / (numRows - 1) : 0;
+  for (let i = 0; i < numRows; i++)
+    tRows[`r${i}`] = i === row ? ROW_EXPAND : ROW_BASE_H - shrink;
+  gsap.killTweensOf(cols);
+  gsap.killTweensOf(rows);
+  gsap.to(cols, { ...tCols, duration: .35, ease: 'power2.out', overwrite: true, onUpdate: applyGrid });
+  gsap.to(rows, { ...tRows, duration: .35, ease: 'power2.out', overwrite: true, delay: .22, onUpdate: applyGrid });
+}
+
+function collapseGrid() {
+  document.querySelectorAll('.cal-day.is-hovered').forEach(c => c.classList.remove('is-hovered'));
+  const rCols = {}, rRows = {};
+  for (let i = 0; i < COL_COUNT; i++) rCols[`c${i}`] = COL_BASE;
+  for (let i = 0; i < numRows;   i++) rRows[`r${i}`] = ROW_BASE_H;
+  gsap.killTweensOf(cols);
+  gsap.killTweensOf(rows);
+  gsap.to(cols, { ...rCols, duration: .45, ease: 'power3.inOut', overwrite: true, onUpdate: applyGrid });
+  gsap.to(rows, { ...rRows, duration: .40, ease: 'power3.inOut', overwrite: true, delay: .05, onUpdate: applyGrid });
+}
+
 function attachStretch(cell) {
-  cell.addEventListener('mouseenter', () => {
-    cell.classList.add('is-hovered');
-    document.body.classList.add('cursor-hover');
-
-    const { col, row } = getCellSlot(cell);
-    const totalFr = COL_COUNT * COL_BASE;
-    const otherFr = (totalFr - COL_EXPAND) / (COL_COUNT - 1);
-    const tCols = {};
-    for (let i = 0; i < COL_COUNT; i++)
-      tCols[`c${i}`] = i === col ? COL_EXPAND : otherFr;
-
-    const tRows = {};
-    const freed  = ROW_EXPAND - ROW_BASE_H;
-    const shrink = numRows > 1 ? freed / (numRows - 1) : 0;
-    for (let i = 0; i < numRows; i++)
-      tRows[`r${i}`] = i === row ? ROW_EXPAND : ROW_BASE_H - shrink;
-
-    gsap.killTweensOf(cols);
-    gsap.killTweensOf(rows);
-    gsap.to(cols, { ...tCols, duration: .35, ease: 'power2.out', overwrite: true, onUpdate: applyGrid });
-    gsap.to(rows, { ...tRows, duration: .35, ease: 'power2.out', overwrite: true, delay: .22, onUpdate: applyGrid });
-  });
-
-  cell.addEventListener('mouseleave', () => {
-    cell.classList.remove('is-hovered');
-    document.body.classList.remove('cursor-hover');
-
-    const rCols = {};
-    for (let i = 0; i < COL_COUNT; i++) rCols[`c${i}`] = COL_BASE;
-    const rRows = {};
-    for (let i = 0; i < numRows; i++)   rRows[`r${i}`] = ROW_BASE_H;
-
-    gsap.killTweensOf(cols);
-    gsap.killTweensOf(rows);
-    gsap.to(cols, { ...rCols, duration: .45, ease: 'power3.inOut', overwrite: true, onUpdate: applyGrid });
-    gsap.to(rows, { ...rRows, duration: .40, ease: 'power3.inOut', overwrite: true, delay: .05, onUpdate: applyGrid });
-  });
+  if (isTouch()) {
+    cell.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const already = cell.classList.contains('is-hovered');
+      collapseGrid();
+      if (!already) expandCell(cell);
+    }, { passive: false });
+  } else {
+    cell.addEventListener('mouseenter', () => {
+      expandCell(cell);
+      document.body.classList.add('cursor-hover');
+    });
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-hovered');
+      document.body.classList.remove('cursor-hover');
+      collapseGrid();
+    });
+  }
 }
 
 function buildCal(y, m) {
@@ -130,24 +145,26 @@ function buildCal(y, m) {
     if (ev) {
       const overlay = document.createElement('div');
       overlay.className = 'cal-event-overlay';
-
       const name = document.createElement('div');
       name.className   = 'cal-event-name';
       name.textContent = ev.name;
-
       const desc = document.createElement('div');
       desc.className   = 'cal-event-desc';
       desc.textContent = ev.desc;
-
       overlay.appendChild(name);
       overlay.appendChild(desc);
       cell.appendChild(overlay);
     }
 
-    attachStretch(cell); // ← manquait !
+    attachStretch(cell);
     grid.appendChild(cell);
   }
 }
+
+// Fermeture au tap extérieur (touch uniquement)
+document.addEventListener('touchstart', (e) => {
+  if (!e.target.closest('.cal-day')) collapseGrid();
+}, { passive: true });
 
 document.getElementById('prevM').addEventListener('click', () => {
   gsap.killTweensOf(cols); gsap.killTweensOf(rows);
@@ -590,65 +607,113 @@ function sizeCanvas() {
 document.querySelectorAll('.drink-cell').forEach(cell => {
   const bars = cell.querySelectorAll('.fl-bar');
 
-  cell.addEventListener('mouseenter', () => {
+  function expandBars() {
     bars.forEach((bar, i) => {
       const w = parseFloat(bar.dataset.w || 0.5);
-      gsap.fromTo(bar,
-        { scaleX: 0 },
-        { scaleX: w, duration: .65 + i * .06, ease: 'power2.out', transformOrigin: 'left' }
-      );
+      gsap.fromTo(bar, { scaleX:0 },
+        { scaleX:w, duration:.65 + i*.06,
+          ease:'power2.out', transformOrigin:'left' });
     });
-  });
+  }
+  function collapseBars() {
+    bars.forEach(bar =>
+      gsap.to(bar, { scaleX:0, duration:.35,
+        ease:'power2.in', transformOrigin:'left' }));
+  }
 
-  cell.addEventListener('mouseleave', () => {
-    bars.forEach(bar => {
-      gsap.to(bar, { scaleX: 0, duration: .35, ease: 'power2.in', transformOrigin: 'left' });
-    });
-  });
+  if (isTouchDevice()) {
+    cell.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (cell.classList.contains('is-hovered')) {
+        cell.classList.remove('is-hovered');
+        collapseBars();
+      } else {
+        document.querySelectorAll('.drink-cell.is-hovered')
+          .forEach(c => { c.classList.remove('is-hovered');
+            c.querySelectorAll('.fl-bar').forEach(b =>
+              gsap.to(b, { scaleX:0, duration:.35, ease:'power2.in',
+                transformOrigin:'left' })); });
+        cell.classList.add('is-hovered');
+        expandBars();
+      }
+    }, { passive: false });
+  } else {
+    cell.addEventListener('mouseenter', expandBars);
+    cell.addEventListener('mouseleave', collapseBars);
+  }
 });
 
 
 
 
 //FOOD
-
+//FOOD
 
 {
   const foodCols   = document.getElementById('foodCols');
   const foodColEls = [...foodCols.querySelectorAll('.food-col')];
   const COL_N      = foodColEls.length;
-  const COL_BASE   = 1;
-  const COL_EXPAND = 2.0;
+  const FOOD_COL_BASE   = 1;
+  const FOOD_COL_EXPAND = 2.0;
   const fCols = {};
-  for (let i = 0; i < COL_N; i++) fCols[`c${i}`] = COL_BASE;
+  for (let i = 0; i < COL_N; i++) fCols[`c${i}`] = FOOD_COL_BASE;
 
   function applyFoodGrid() {
     const vals = Array.from({ length: COL_N }, (_, i) => `${fCols['c' + i]}fr`).join(' ');
     foodCols.style.gridTemplateColumns = vals;
   }
 
+  function expandFoodCol(idx) {
+    const col   = foodColEls[idx];
+    const items = col.querySelectorAll('.food-item');
+    col.classList.add('is-expanded');
+    const other = (COL_N * FOOD_COL_BASE - FOOD_COL_EXPAND) / (COL_N - 1);
+    const target = {};
+    for (let i = 0; i < COL_N; i++)
+      target[`c${i}`] = i === idx ? FOOD_COL_EXPAND : other;
+    gsap.killTweensOf(fCols);
+    gsap.to(fCols, { ...target, duration: .4, ease: 'power2.out', overwrite: true, onUpdate: applyFoodGrid });
+    gsap.to(items, { opacity: 1, y: 0, duration: .4, stagger: .07, ease: 'power3.out' });
+  }
+
+  function collapseFoodAll() {
+    foodColEls.forEach((col) => {
+      col.classList.remove('is-expanded');
+      gsap.to(col.querySelectorAll('.food-item'), { opacity: 0, y: 8, duration: .3, ease: 'power2.in' });
+    });
+    const reset = {};
+    for (let i = 0; i < COL_N; i++) reset[`c${i}`] = FOOD_COL_BASE;
+    gsap.killTweensOf(fCols);
+    gsap.to(fCols, { ...reset, duration: .5, ease: 'power3.inOut', overwrite: true, onUpdate: applyFoodGrid });
+  }
+
   foodColEls.forEach((col, idx) => {
     const label = col.querySelector('.food-col-label');
-    const items = col.querySelectorAll('.food-item');
 
-    label.addEventListener('mouseenter', () => {
-      const other = (COL_N * COL_BASE - COL_EXPAND) / (COL_N - 1);
-      const target = {};
-      for (let i = 0; i < COL_N; i++)
-        target[`c${i}`] = i === idx ? COL_EXPAND : other;
-      gsap.killTweensOf(fCols);
-      gsap.to(fCols, { ...target, duration: .4, ease: 'power2.out', overwrite: true, onUpdate: applyFoodGrid });
-      gsap.to(items, { opacity: 1, y: 0, duration: .4, stagger: .07, ease: 'power3.out' });
-    });
-
-    label.addEventListener('mouseleave', () => {
-      const reset = {};
-      for (let i = 0; i < COL_N; i++) reset[`c${i}`] = COL_BASE;
-      gsap.killTweensOf(fCols);
-      gsap.to(fCols, { ...reset, duration: .5, ease: 'power3.inOut', overwrite: true, onUpdate: applyFoodGrid });
-      gsap.to(items, { opacity: 0, y: 8, duration: .3, ease: 'power2.in' });
-    });
+    if (isTouch()) {
+      label.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const already = col.classList.contains('is-expanded');
+        collapseFoodAll();
+        if (!already) expandFoodCol(idx);
+      }, { passive: false });
+    } else {
+      label.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-hover');
+        collapseFoodAll();
+        expandFoodCol(idx);
+      });
+      label.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-hover');
+        collapseFoodAll();
+      });
+    }
   });
+
+  // Fermeture au tap extérieur
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.food-col')) collapseFoodAll();
+  }, { passive: true });
 }
 
 
@@ -1492,3 +1557,30 @@ document.querySelectorAll('.js-fade').forEach((el, i) => {
   }, { passive: true });
 
 })();
+
+
+
+
+//FERMETURE MOBILE 
+
+if (isTouchDevice()) {
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.cal-day')) {
+      document.querySelectorAll('.cal-day.is-hovered')
+        .forEach(c => c.classList.remove('is-hovered'));
+      gsap.killTweensOf(cols); gsap.killTweensOf(rows);
+      const rC = {}, rR = {};
+      for (let i = 0; i < COL_COUNT; i++) rC[`c${i}`] = COL_BASE;
+      for (let i = 0; i < numRows;   i++) rR[`r${i}`] = ROW_BASE_H;
+      gsap.to(cols, { ...rC, duration:.45, ease:'power3.inOut', onUpdate: applyGrid });
+      gsap.to(rows, { ...rR, duration:.40, ease:'power3.inOut', delay:.05, onUpdate: applyGrid });
+    }
+    if (!e.target.closest('.drink-cell')) {
+      document.querySelectorAll('.drink-cell.is-hovered')
+        .forEach(c => { c.classList.remove('is-hovered');
+          c.querySelectorAll('.fl-bar').forEach(b =>
+            gsap.to(b, { scaleX:0, duration:.35, ease:'power2.in',
+              transformOrigin:'left' })); });
+    }
+  }, { passive: true });
+}
