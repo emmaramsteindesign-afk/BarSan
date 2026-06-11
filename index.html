@@ -167,33 +167,30 @@
       <div class="bs-sliders">
         <div class="bs-sl-row">
           <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-0">Sweet</span><span class="bs-sl-lbl" id="lr-0">Sour</span></div>
-          <div class="bs-sl-track"><input type="range" id="sl-0" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-0"></div></div>
+          <div class="bs-sl-track"><input type="range" id="sl-0" min="0" max="100" value="50" aria-label="Sweet to Sour"><div class="bs-sl-dot" id="md-0"></div></div>
         </div>
         <div class="bs-sl-row">
           <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-1">Mineral</span><span class="bs-sl-lbl" id="lr-1">Fruity</span></div>
-          <div class="bs-sl-track"><input type="range" id="sl-1" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-1"></div></div>
+          <div class="bs-sl-track"><input type="range" id="sl-1" min="0" max="100" value="50" aria-label="Mineral to Fruity"><div class="bs-sl-dot" id="md-1"></div></div>
         </div>
         <div class="bs-sl-row">
           <div class="bs-sl-ends"><span class="bs-sl-lbl" id="ll-2">Simple</span><span class="bs-sl-lbl" id="lr-2">Complex</span></div>
-          <div class="bs-sl-track"><input type="range" id="sl-2" min="0" max="100" value="50"><div class="bs-sl-dot" id="md-2"></div></div>
+          <div class="bs-sl-track"><input type="range" id="sl-2" min="0" max="100" value="50" aria-label="Simple to Complex"><div class="bs-sl-dot" id="md-2"></div></div>
         </div>
       </div>
       <button class="bs-btn-random" id="btnRandom">Surprise me →</button>
-      <div class="bs-status" id="statusMsg"></div>
+      <div class="bs-status" id="statusMsg" aria-live="polite"></div>
     </aside>
-
     <div class="bs-center-right">
       <div class="bs-result-top">
         <div class="bs-r-label">Tonight's pick</div>
         <div class="bs-r-name" id="rName-mobile">—</div>
         <div class="bs-r-type" id="rType-mobile">—</div>
       </div>
-
       <main class="bs-panel bs-center" id="centerPanel">
         <div class="bs-scan-line" id="scanLine"></div>
-        <canvas id="glassCanvas"></canvas>
+        <canvas id="glassCanvas" aria-label="Cocktail glass visualizer" role="img"></canvas>
       </main>
-
       <aside class="bs-panel bs-right">
         <div class="bs-idle" id="rIdle">Move the sliders<br>to find your drink.</div>
         <div class="bs-result" id="resultBlock">
@@ -207,7 +204,7 @@
           <div class="bs-r-ingr-list" id="rIngr"></div>
           <div class="bs-r-profile">
             <div class="bs-rp-label">Flavor profile</div>
-            <svg id="flavorChart" viewBox="0 0 188 148" xmlns="http://www.w3.org/2000/svg"></svg>
+            <svg id="flavorChart" viewBox="0 0 188 148" xmlns="http://www.w3.org/2000/svg" aria-label="Flavor profile chart" role="img"></svg>
           </div>
         </div>
       </aside>
