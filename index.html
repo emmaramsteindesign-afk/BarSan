@@ -38,9 +38,9 @@
   padding-bottom:40vh;
 }
 .hero-logo{
-  width:min(600px,90vw);
-  height:auto;
-  opacity:.85;
+  width: min(600px, 90vw);
+  height: auto;
+  aspect-ratio: 600 / 160; /* ajuste selon les vraies proportions de ton SVG */
 }
 .hero-info-text{
   max-width:210px;
@@ -422,8 +422,8 @@ nav.solid .nav-burger span { background: var(--ink); }
     </div></div>
   </div>
   <div class="hero-content">
- <img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo"
-     width="300" height="80">
+<img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo"
+     width="600" height="160">
     <div class="hero-info-text">
       73/1 Charoen Prathet Rd, Chiang Mai<br>
       +66 81 914 6433<br>
@@ -458,10 +458,9 @@ nav.solid .nav-burger span { background: var(--ink); }
       </p>
     </div>
     <div class="photo-grid js-fade">
-      <div class="photo-cell"><img src="./assets/images/bar-01.avif" alt="Bar interior"></div>
-      <div class="photo-cell"><img src="./assets/images/bar-02.avif" alt="Cocktail close-up"></div>
-      <div class="photo-cell"><img src="./assets/images/bar-03.avif" alt="Bar at night"></div>
-    </div>
+<div class="photo-cell"><img src="./assets/images/bar-01.avif" alt="Bar interior"   width="800" height="600"></div>
+<div class="photo-cell"><img src="./assets/images/bar-02.avif" alt="Cocktail close-up" width="800" height="600"></div>
+<div class="photo-cell"><img src="./assets/images/bar-03.avif" alt="Bar at night"   width="800" height="600"></div>  </div>
   </div>
 </section>
 
