@@ -32,8 +32,8 @@
 
 @font-face {
   font-family: 'Jost';
-  src: url('../assets/fonts/Jost-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900;
+  src: url('../assets/fonts/Jost-VariableFont_wght.woff2') format('truetype');
+  font-weight: 100 300;
   font-style: normal;
   font-display: swap;
 }
