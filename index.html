@@ -13,8 +13,9 @@
   <link rel="preload" href="/assets/fonts/Jost-VariableFont_wght.ttf"
         as="font" type="font/ttf" crossorigin>
 
-  <!-- CSS — une seule fois, chemin correct -->
-  <link rel="stylesheet" href="./css/library.css">
+<!-- Load non-critical CSS async -->
+<link rel="stylesheet" href="/css/library.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/css/library.css"></noscript>
 
 <link rel="preload" as="image" href="/assets/images/HeroBg.avif" fetchpriority="high">
 <style>
@@ -330,7 +331,8 @@ nav.solid .nav-burger span { background: var(--ink); }
 <div class="cursor-ring" id="curR"></div>
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <img src="/assets/images/BarSanLogoSmol.svg" alt="BarSan">
+<img src="/assets/images/BarSanLogoSmol.svg" alt="BarSan"
+     width="120" height="40">
   </a>
   <div class="nav-r">
     <a href="#bar">The bar</a>
@@ -419,7 +421,8 @@ nav.solid .nav-burger span { background: var(--ink); }
     </div></div>
   </div>
 
-  <div class="hero-content"><img src="/assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo" loading="lazy">
+  <div class="hero-content"><img src="/assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo"
+     width="300" height="80" loading="lazy">
     <div class="hero-info-text">
       73/1 Charoen Prathet Rd, Chiang Mai<br>
       +66 81 914 6433<br>
@@ -595,7 +598,9 @@ nav.solid .nav-burger span { background: var(--ink); }
       <div class="footer-line footer-line--right footer-line--tiny"></div>
     </div>
   </div>
-  <img src="/assets/images/BarSanSuperSmol.svg" alt="Bar·San" class="footer-logo">
+<img src="/assets/images/BarSanSuperSmol.svg" alt="Bar·San" class="footer-logo"
+     width="400" height="120">
+
 </footer>
 
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
