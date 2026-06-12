@@ -13,7 +13,7 @@
   <!-- CSS — une seule fois, chemin correct -->
   <link rel="stylesheet" href="./css/library.css">
 
-
+<link rel="preload" as="image" href="assets/images/HeroBg.avif" fetchpriority="high">
 </head>
 <body>
 
@@ -115,8 +115,7 @@
     </div></div>
   </div>
 
-  <div class="hero-content">
-    <img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo">
+  <div class="hero-content"><img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo" loading="lazy">
     <div class="hero-info-text">
       73/1 Charoen Prathet Rd, Chiang Mai<br>
       +66 81 914 6433<br>
@@ -295,11 +294,9 @@
   <img src="assets/images/BarSanSuperSmol.svg" alt="Bar·San" class="footer-logo">
 </footer>
 
-<!-- GSAP — chargé en premier, avant tous les autres scripts -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<!-- Loader — juste après GSAP -->
-<script src="./js/library.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script defer src="./js/library.js"></script>
 
 </body>
 </html>

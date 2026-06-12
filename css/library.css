@@ -1980,7 +1980,7 @@ nav.solid .nav-burger span { background: var(--ink); }
   font-size: 10px;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.35);
+  color: rgba(232, 228, 220, 0.65);
   width: 44px;
   flex-shrink: 0;
   text-align: right;
