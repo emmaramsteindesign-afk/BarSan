@@ -8,14 +8,14 @@ const MONTHS = ['January','February','March','April','May','June',
   'July','August','September','October','November','December'];
  
 const events = {
-  '2026-6-4':  { name: 'DJ Night — House & Nu-Jazz',  desc: 'Local DJ sets blending house and nu-jazz until midnight. No cover charge.', img: './assets/images/bar-01.avif' },
-  '2026-6-9':  { name: 'Cocktail Tasting Menu',        desc: 'A guided 5-cocktail journey through seasonal ingredients. Booking required.', img: './assets/images/bar-02.avif' },
-  '2026-6-19': { name: 'Live Jazz Quartet',             desc: 'Four musicians, one evening. Standards and originals from 8 PM.', img: './assets/images/bar-03.avif' },
-  '2026-6-21': { name: 'Mezcal & Fire',                 desc: 'A special menu built around smoked spirits and Thai chili. Limited seats.', img: './assets/images/bar-01.avif' },
-  '2026-7-2':  { name: 'Acoustic Duo',                  desc: 'Intimate acoustic set. Arrive early, it fills up fast.', img: './assets/images/bar-02.avif' },
-  '2026-7-8':  { name: "Bartender's Special",           desc: 'One night, one menu. Our head bartender takes over completely.', img: './assets/images/bar-03.avif' },
-  '2026-7-15': { name: 'Sake & Umami',                  desc: 'Curated sake pairings with small Japanese-inspired bites.', img: './assets/images/bar-01.avif' },
-  '2026-7-21': { name: 'Independence Night',            desc: 'Open bar format, live music, until 1 AM.', img: './assets/images/bar-02.avif' },
+  '2026-6-4':  { name: 'DJ Night — House & Nu-Jazz',  desc: 'Local DJ sets blending house and nu-jazz until midnight. No cover charge.', img: '../assets/images/bar-01.avif' },
+  '2026-6-9':  { name: 'Cocktail Tasting Menu',        desc: 'A guided 5-cocktail journey through seasonal ingredients. Booking required.', img: '../assets/images/bar-02.avif' },
+  '2026-6-19': { name: 'Live Jazz Quartet',             desc: 'Four musicians, one evening. Standards and originals from 8 PM.', img: '../assets/images/bar-03.avif' },
+  '2026-6-21': { name: 'Mezcal & Fire',                 desc: 'A special menu built around smoked spirits and Thai chili. Limited seats.', img: '../assets/images/bar-01.avif' },
+  '2026-7-2':  { name: 'Acoustic Duo',                  desc: 'Intimate acoustic set. Arrive early, it fills up fast.', img: '../assets/images/bar-02.avif' },
+  '2026-7-8':  { name: "Bartender's Special",           desc: 'One night, one menu. Our head bartender takes over completely.', img: '../assets/images/bar-03.avif' },
+  '2026-7-15': { name: 'Sake & Umami',                  desc: 'Curated sake pairings with small Japanese-inspired bites.', img: '../assets/images/bar-01.avif' },
+  '2026-7-21': { name: 'Independence Night',            desc: 'Open bar format, live music, until 1 AM.', img: '../assets/images/bar-02.avif' },
 };
  
 let cY = 2026, cM = 5;
