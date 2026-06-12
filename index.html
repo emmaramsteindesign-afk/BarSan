@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="./css/library.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="./css/library.css"></noscript>
 
+<link rel="preload" as="image" href="./assets/images/HeroFg.avif" fetchpriority="high">
 <link rel="preload" as="image" href="./assets/images/HeroBg.avif" fetchpriority="high">
 <style>
 
@@ -420,9 +421,9 @@ nav.solid .nav-burger span { background: var(--ink); }
       <span class="mixo-role">Bartender</span>
     </div></div>
   </div>
-
-  <div class="hero-content"><img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo"
-     width="300" height="80" loading="lazy">
+  <div class="hero-content">
+ <img src="./assets/images/BarSanLogo.svg" alt="BarSan" class="hero-logo"
+     width="300" height="80">
     <div class="hero-info-text">
       73/1 Charoen Prathet Rd, Chiang Mai<br>
       +66 81 914 6433<br>
@@ -437,8 +438,9 @@ nav.solid .nav-burger span { background: var(--ink); }
     <span>Chiang Mai.</span>
   </div>
 
-  <img class="hero-fg" src="./assets/images/HeroFg.avif" alt="">
-</section>
+<img class="hero-fg" src="./assets/images/HeroFg.avif" alt=""
+     fetchpriority="high"
+     decoding="async"></section>
 
 <!-- BAR -->
 <section id="bar">
