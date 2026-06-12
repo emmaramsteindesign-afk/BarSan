@@ -1,13 +1,12 @@
-
 const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
-
+ 
 // ═══════════════════════════════════════════════
 // CALENDAR
 // ═══════════════════════════════════════════════
-
+ 
 const MONTHS = ['January','February','March','April','May','June',
   'July','August','September','October','November','December'];
-
+ 
 const events = {
   '2026-6-4':  { name: 'DJ Night — House & Nu-Jazz',  desc: 'Local DJ sets blending house and nu-jazz until midnight. No cover charge.', img: '/assets/images/bar-01.avif' },
   '2026-6-9':  { name: 'Cocktail Tasting Menu',        desc: 'A guided 5-cocktail journey through seasonal ingredients. Booking required.', img: '/assets/images/bar-02.avif' },
@@ -18,26 +17,26 @@ const events = {
   '2026-7-15': { name: 'Sake & Umami',                  desc: 'Curated sake pairings with small Japanese-inspired bites.', img: '/assets/images/bar-01.avif' },
   '2026-7-21': { name: 'Independence Night',            desc: 'Open bar format, live music, until 1 AM.', img: '/assets/images/bar-02.avif' },
 };
-
+ 
 let cY = 2026, cM = 5;
-
+ 
 const COL_COUNT  = 7;
 const COL_BASE   = 1;
 const COL_EXPAND = 2.0;
 const ROW_BASE_H = 90;
 const ROW_EXPAND = 130;
-
+ 
 const cols = {};
 const rows = {};
 let numRows = 0;
-
+ 
 const isTouch = () => window.matchMedia('(hover: none)').matches;
-
+ 
 function resetProxy() {
   for (let i = 0; i < COL_COUNT; i++) cols[`c${i}`] = COL_BASE;
   for (let i = 0; i < numRows; i++)   rows[`r${i}`] = ROW_BASE_H;
 }
-
+ 
 function applyGrid() {
   const grid = document.getElementById('calGrid');
   const cVals = Array.from({length: COL_COUNT}, (_, i) => `${cols['c'+i]}fr`).join(' ');
@@ -45,14 +44,14 @@ function applyGrid() {
   grid.style.gridTemplateColumns = cVals;
   if (numRows) grid.style.gridTemplateRows = 'auto ' + rVals;
 }
-
+ 
 function getCellSlot(cell) {
   const grid = document.getElementById('calGrid');
   const allCells = [...grid.querySelectorAll('.cal-day')];
   const absSlot = allCells.indexOf(cell);
   return { col: absSlot % 7, row: Math.floor(absSlot / 7) };
 }
-
+ 
 function expandCell(cell) {
   cell.classList.add('is-hovered');
   const { col, row } = getCellSlot(cell);
@@ -70,7 +69,7 @@ function expandCell(cell) {
   gsap.to(cols, { ...tCols, duration: .35, ease: 'power2.out', overwrite: true, onUpdate: applyGrid });
   gsap.to(rows, { ...tRows, duration: .35, ease: 'power2.out', overwrite: true, delay: .22, onUpdate: applyGrid });
 }
-
+ 
 function collapseGrid() {
   document.querySelectorAll('.cal-day.is-hovered').forEach(c => c.classList.remove('is-hovered'));
   const rCols = {}, rRows = {};
@@ -81,7 +80,7 @@ function collapseGrid() {
   gsap.to(cols, { ...rCols, duration: .45, ease: 'power3.inOut', overwrite: true, onUpdate: applyGrid });
   gsap.to(rows, { ...rRows, duration: .40, ease: 'power3.inOut', overwrite: true, delay: .05, onUpdate: applyGrid });
 }
-
+ 
 function attachStretch(cell) {
   cell.addEventListener('mouseenter', () => {
     if (isTouch()) return;
@@ -101,46 +100,46 @@ function attachStretch(cell) {
     if (!already) expandCell(cell);
   }, { passive: false });
 }
-
+ 
 function buildCal(y, m) {
   const grid = document.getElementById('calGrid');
   const hds  = [...grid.querySelectorAll('.cal-hd')];
   grid.innerHTML = '';
   hds.forEach(h => grid.appendChild(h));
-
+ 
   document.getElementById('calMonthBig').textContent = MONTHS[m].toUpperCase();
-
+ 
   const firstDay  = new Date(y, m, 1).getDay();
   const totalDays = new Date(y, m + 1, 0).getDate();
   numRows = Math.ceil((firstDay + totalDays) / 7);
-
+ 
   resetProxy();
   grid.style.gridTemplateColumns = '';
   grid.style.gridTemplateRows    = '';
-
+ 
   for (let i = 0; i < firstDay; i++) {
     const e = document.createElement('div');
     e.className = 'cal-day empty';
     grid.appendChild(e);
   }
-
+ 
   for (let d = 1; d <= totalDays; d++) {
     const key  = `${y}-${m + 1}-${d}`;
     const ev   = events[key];
     const cell = document.createElement('div');
     cell.className = 'cal-day' + (ev ? ' has-event' : '');
-
+ 
     if (ev) {
       cell.style.backgroundImage    = `url('${ev.img}')`;
       cell.style.backgroundSize     = 'cover';
       cell.style.backgroundPosition = 'center';
     }
-
+ 
     const num = document.createElement('div');
     num.className   = 'cal-num';
     num.textContent = d;
     cell.appendChild(num);
-
+ 
     if (ev) {
       const overlay = document.createElement('div');
       overlay.className = 'cal-event-overlay';
@@ -154,16 +153,16 @@ function buildCal(y, m) {
       overlay.appendChild(desc);
       cell.appendChild(overlay);
     }
-
+ 
     attachStretch(cell);
     grid.appendChild(cell);
   }
 }
-
+ 
 document.addEventListener('touchstart', (e) => {
   if (!e.target.closest('.cal-day')) collapseGrid();
 }, { passive: true });
-
+ 
 document.getElementById('prevM').addEventListener('click', () => {
   gsap.killTweensOf(cols); gsap.killTweensOf(rows);
   cM--; if (cM < 0) { cM = 11; cY--; }
@@ -174,10 +173,10 @@ document.getElementById('nextM').addEventListener('click', () => {
   cM++; if (cM > 11) { cM = 0; cY++; }
   buildCal(cY, cM);
 });
-
+ 
 buildCal(cY, cM);
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // COCKTAIL DATABASE
 // ═══════════════════════════════════════════════
@@ -220,20 +219,20 @@ const COCKTAILS = {
   "Midori Sour":        { acid:70, fruit:88, complexity:32, type:"Sweet-Sour · Melon",         glass:"coupe",     fill:.74, garnish:"twist",  ingredients:["Midori melon liqueur","Fresh lemon juice","Vodka","Simple syrup","Egg white"],                          flavors:[32,78,68,8,4,8] },
   "Last Word":          { acid:78, fruit:60, complexity:88, type:"Balanced · Herbal",          glass:"coupe",     fill:.72, garnish:"none",   ingredients:["London Dry gin","Green Chartreuse","Maraschino liqueur","Fresh lime juice","Ice"],                      flavors:[58,45,75,42,5,0] },
 };
-
+ 
 const FLAVOR_KEYS = ['abv','sweet','sour','bitter','salty','creamy'];
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // CURSOR
 // ═══════════════════════════════════════════════
-
+ 
 const cur  = document.getElementById('cur');
 const curR = document.getElementById('curR');
 let mx = 0, my = 0, rx = 0, ry = 0;
-
+ 
 document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
+ 
 (function cursorLoop() {
   rx += (mx - rx) * .18;
   ry += (my - ry) * .18;
@@ -243,12 +242,12 @@ document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; })
   curR.style.top  = ry + 'px';
   requestAnimationFrame(cursorLoop);
 })();
-
+ 
 document.querySelectorAll('a,button,.mixo,.photo-cell,.drink-cell,.cal-day,.food-row').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
-
+ 
 (function() {
   const drinksSection = document.getElementById('drinks');
   if (!drinksSection || !cur || !curR) return;
@@ -271,18 +270,19 @@ document.querySelectorAll('a,button,.mixo,.photo-cell,.drink-cell,.cal-day,.food
     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
   });
 })();
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // DRINK VISUALIZER
 // ═══════════════════════════════════════════════
-
+ 
 document.addEventListener('DOMContentLoaded', function () {
   if (!document.getElementById('glassCanvas')) return;
-
+ 
   const canvas = document.getElementById('glassCanvas');
   const ctx    = canvas.getContext('2d');
-
+  const centerPanel = document.getElementById('centerPanel');
+ 
   let currentGlass   = 'coupe';
   let currentGarnish = 'none';
   let targetFill     = 0;
@@ -291,18 +291,41 @@ document.addEventListener('DOMContentLoaded', function () {
   let debounceTimer  = null;
   let scanning       = false;
   let lastFlavors    = [50, 50, 50, 50, 50, 50];
-
+  
+  // ← CACHE dimensions to avoid repeated DOM reads
+  let cachedPanelHeight = 600;
+ 
   function sizeCanvas() {
     const isMobile = window.innerWidth <= 1200;
     const W = isMobile ? Math.min(window.innerWidth * 0.7, 280) : 320;
+    
+    // Single DOM read, cached
+    if (centerPanel) {
+      cachedPanelHeight = centerPanel.offsetHeight;
+    }
+    
     const H = isMobile
       ? Math.round(W * 1.6)
-      : Math.min(document.getElementById('centerPanel').offsetHeight * 0.88, 560);
+      : Math.min(cachedPanelHeight * 0.88, 560);
+    
     canvas.width  = Math.round(W);
     canvas.height = Math.round(H);
   }
+ 
   sizeCanvas();
-
+ 
+  // ← Use ResizeObserver instead of resize event for better performance
+  const resizeObserver = new ResizeObserver(() => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      sizeCanvas();
+    }, 150);
+  });
+  
+  if (centerPanel) {
+    resizeObserver.observe(centerPanel);
+  }
+ 
   function renderLoop() {
     T += 0.012;
     animFill += (targetFill - animFill) * 0.04;
@@ -311,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(renderLoop);
   }
   renderLoop();
-
+ 
   function getVals() {
     return [
       +document.getElementById('sl-0').value,
@@ -319,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
       +document.getElementById('sl-2').value
     ];
   }
-
+ 
   function findClosest(a, f, c) {
     let best = null, minD = Infinity;
     for (const n of Object.keys(COCKTAILS)) {
@@ -329,10 +352,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return best;
   }
-
+ 
   // ── flavor chart HTML bars ──
   const FLAVOR_ROWS = ['ABV', 'Sweet', 'Sour', 'Bitter', 'Salty', 'Creamy'];
-
+ 
   function updateChartDots(flavors) {
     lastFlavors = flavors;
     FLAVOR_ROWS.forEach((_, i) => {
@@ -340,19 +363,19 @@ document.addEventListener('DOMContentLoaded', function () {
       if (bar) bar.style.width = (flavors[i] ?? 50) + '%';
     });
   }
-
+ 
   function showResult(name) {
     const c        = COCKTAILS[name];
     currentGlass   = c.glass;
     currentGarnish = c.garnish;
     targetFill     = c.fill;
-
+ 
     document.getElementById('rIdle').style.display      = 'none';
     document.getElementById('rName').textContent        = name;
     document.getElementById('rType').textContent        = c.type;
     document.getElementById('rName-mobile').textContent = name;
     document.getElementById('rType-mobile').textContent = c.type;
-
+ 
     const ingrEl = document.getElementById('rIngr');
     ingrEl.innerHTML = '';
     c.ingredients.forEach(i => {
@@ -361,20 +384,20 @@ document.addEventListener('DOMContentLoaded', function () {
       d.textContent = i;
       ingrEl.appendChild(d);
     });
-
+ 
     updateChartDots(c.flavors || [50, 50, 50, 50, 50, 50]);
-
+ 
     [c.acid, c.fruit, c.complexity].forEach((v, i) => {
       const m      = document.getElementById('md-' + i);
       m.style.left = v + '%';
       m.classList.add('show');
     });
-
+ 
     const rb = document.getElementById('resultBlock');
     rb.classList.remove('show');
     requestAnimationFrame(() => rb.classList.add('show'));
   }
-
+ 
   function runScan(callback) {
     if (scanning) return;
     scanning = true;
@@ -400,11 +423,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     requestAnimationFrame(step);
   }
-
+ 
   function setStatus(m) {
     document.getElementById('statusMsg').textContent = m;
   }
-
+ 
   function updateLabels() {
     const [a, f, c] = getVals();
     [[a,'ll-0','lr-0'],[f,'ll-1','lr-1'],[c,'ll-2','lr-2']].forEach(([v, l, r]) => {
@@ -412,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById(r).classList.toggle('lit', v >= 50);
     });
   }
-
+ 
   ['sl-0','sl-1','sl-2'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
       updateLabels();
@@ -424,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 500);
     });
   });
-
+ 
   document.getElementById('btnRandom').addEventListener('click', () => {
     if (scanning) return;
     clearTimeout(debounceTimer);
@@ -437,10 +460,10 @@ document.addEventListener('DOMContentLoaded', function () {
     ['md-0','md-1','md-2'].forEach(m => document.getElementById(m).classList.remove('show'));
     runScan(() => showResult(pick));
   });
-
+ 
   updateLabels();
   updateChartDots([50, 50, 50, 50, 50, 50]);
-
+ 
   setTimeout(() => {
     const names = Object.keys(COCKTAILS);
     const pick  = names[Math.floor(Math.random() * names.length)];
@@ -450,19 +473,20 @@ document.addEventListener('DOMContentLoaded', function () {
     updateLabels();
     showResult(pick);
   }, 200);
-
-  window.addEventListener('resize', sizeCanvas);
-
+ 
+  // ← REMOVED: duplicate window.addEventListener('resize', sizeCanvas);
+  // ← ResizeObserver handles all resizing now
+ 
 }); // ← fin DOMContentLoaded visualizer
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // DRINKS ACCORDION
 // ═══════════════════════════════════════════════
-
+ 
 document.querySelectorAll('.drink-cell').forEach(cell => {
   const bars = cell.querySelectorAll('.fl-bar');
-
+ 
   function expandBars() {
     bars.forEach((bar, i) => {
       const w = parseFloat(bar.dataset.w || 0.5);
@@ -472,7 +496,7 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
   function collapseBars() {
     bars.forEach(bar => gsap.to(bar, { scaleX: 0, duration: .35, ease: 'power2.in', transformOrigin: 'left' }));
   }
-
+ 
   if (isTouchDevice()) {
     cell.addEventListener('touchstart', (e) => {
       e.preventDefault();
@@ -493,12 +517,12 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
     cell.addEventListener('mouseleave', collapseBars);
   }
 });
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // FOOD
 // ═══════════════════════════════════════════════
-
+ 
 {
   const foodCols   = document.getElementById('foodCols');
   const foodColEls = [...foodCols.querySelectorAll('.food-col')];
@@ -508,11 +532,11 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
   const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
   const fCols = {};
   for (let i = 0; i < COL_N; i++) fCols[`c${i}`] = FOOD_COL_BASE;
-
+ 
   function applyFoodGrid() {
     foodCols.style.gridTemplateColumns = Array.from({ length: COL_N }, (_, i) => `${fCols['c' + i]}fr`).join(' ');
   }
-
+ 
   function expandFoodCol(idx) {
     const col   = foodColEls[idx];
     const items = col.querySelectorAll('.food-item');
@@ -528,7 +552,7 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
       gsap.to(items, { opacity: 1, duration: .3, stagger: .05, ease: 'power2.out' });
     }
   }
-
+ 
   function collapseFoodAll() {
     foodColEls.forEach(col => {
       col.classList.remove('is-expanded');
@@ -541,7 +565,7 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
       gsap.to(fCols, { ...reset, duration: .5, ease: 'power3.inOut', overwrite: true, onUpdate: applyFoodGrid });
     }
   }
-
+ 
   foodColEls.forEach((col, idx) => {
     const label = col.querySelector('.food-col-label');
     label.addEventListener('click', (e) => {
@@ -566,32 +590,32 @@ document.querySelectorAll('.drink-cell').forEach(cell => {
       label.addEventListener('mouseleave', () => { document.body.classList.remove('cursor-hover'); collapseFoodAll(); });
     }
   });
-
+ 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.food-col') && isMobile()) collapseFoodAll();
   }, { passive: true });
 }
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // FOOTER
 // ═══════════════════════════════════════════════
-
+ 
 gsap.registerPlugin(ScrollTrigger);
-
+ 
 gsap.set('.footer-info', { opacity: 0 });
 gsap.set('.footer-logo', { opacity: 0, x: 50 });
 gsap.set('.footer-line', { flexGrow: 1, flexShrink: 1, flexBasis: '0%', scaleX: 0 });
 gsap.set('.footer-line--left',  { transformOrigin: 'left' });
 gsap.set('.footer-line--right', { transformOrigin: 'right' });
-
+ 
 const row1L = document.querySelector('.footer-row:nth-child(1) .footer-line--left');
 const row1R = document.querySelector('.footer-row:nth-child(1) .footer-line--right');
 const row2L = document.querySelector('.footer-row:nth-child(2) .footer-line--left');
 const row2R = document.querySelector('.footer-row:nth-child(2) .footer-line--right');
 const row3L = document.querySelector('.footer-row:nth-child(3) .footer-line--left');
 const row3R = document.querySelector('.footer-row:nth-child(3) .footer-line--right');
-
+ 
 gsap.timeline({ scrollTrigger: { trigger: '.footer', start: 'top 80%' } })
   .to('.footer-line', { scaleX: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
   .to('.footer-info', { opacity: 1, duration: 0.4, stagger: 0.12 }, '-=0.4')
@@ -600,15 +624,15 @@ gsap.timeline({ scrollTrigger: { trigger: '.footer', start: 'top 80%' } })
   .to(row2R,          { flexGrow: 20, duration: 0.9, ease: 'power4.inOut' }, '<')
   .to(row2L,          { flexGrow: 0.05, duration: 0.9, ease: 'power4.inOut' }, '<')
   .to('.footer-logo', { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }, '-=0.5');
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // GLASSES
 // ═══════════════════════════════════════════════
-
+ 
 function hash(x,y){let h=(x*1619+y*31337+1013904223)&0xffffffff;h=Math.imul(h^(h>>>16),0x45d9f3b);h=Math.imul(h^(h>>>16),0x45d9f3b);return((h^(h>>>16))>>>0)/0xffffffff}
 function noise(x,y){const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy;const a=hash(ix,iy),b=hash(ix+1,iy),c=hash(ix,iy+1),d=hash(ix+1,iy+1);const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);return a+(b-a)*ux+(c-a)*uy+(a-b-c+d)*ux*uy}
-
+ 
 function drawLiquid(ctx, canvas, clipFn, botY, fillPct, seed, t) {
   if (fillPct <= 0) return;
   const W = canvas.width;
@@ -646,7 +670,7 @@ function drawLiquid(ctx, canvas, clipFn, botY, fillPct, seed, t) {
   ctx.strokeStyle='rgba(232,228,220,0.18)';ctx.lineWidth=0.8;ctx.stroke();
   ctx.restore();
 }
-
+ 
 function drawStraw(ctx, x1,y1,x2,y2,r){
   const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
   const nx=-dy/len,ny=dx/len;
@@ -661,7 +685,7 @@ function drawStraw(ctx, x1,y1,x2,y2,r){
   ctx.strokeStyle='rgba(232,228,220,0.22)';ctx.lineWidth=r*0.45;ctx.stroke();
   ctx.restore();
 }
-
+ 
 function drawIce(ctx, cx, liqY, bot, S, t, offsetX=0){
   const iceBob=Math.sin(t*1.2)*2.5*S;
   const iceY=liqY+(bot-liqY)*0.10+iceBob;
@@ -677,7 +701,7 @@ function drawIce(ctx, cx, liqY, bot, S, t, offsetX=0){
   ctx.beginPath();ctx.moveTo(iceX+iceS,iceY);ctx.lineTo(iceX+iceS-7*S,iceY-7*S);ctx.stroke();
   ctx.globalAlpha=1;ctx.setLineDash([]);ctx.restore();
 }
-
+ 
 function drawCoupe(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/200,cx=W/2;
   const bowlTop=28*S, bowlBot=Math.min(H*0.50,260*S);
@@ -697,7 +721,7 @@ function drawCoupe(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.18;ctx.lineWidth=1.6*S;ctx.beginPath();ctx.moveTo(inset1,bowlTop);ctx.lineTo(W-inset1,bowlTop);ctx.stroke();ctx.globalAlpha=1;
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(20*S,bowlTop+16*S);ctx.quadraticCurveTo(16*S,bowlTop+(bowlBot-bowlTop)*0.5,36*S,bowlTop+(bowlBot-bowlTop)*0.78);ctx.stroke();ctx.globalAlpha=1;
 }
-
+ 
 function drawRocks(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/220,cx=W/2;
   const top=28*S,bot=H-30*S,wT=100*S,wB=86*S;
@@ -715,7 +739,7 @@ function drawRocks(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-wT+6*S,top+10*S);ctx.lineTo(cx-wT*0.5+4*S,top+(bot-top)*0.5);ctx.stroke();ctx.globalAlpha=1;
   if(garnish==='twist'){ctx.save();ctx.globalAlpha=0.45;ctx.strokeStyle='rgba(232,228,220,0.7)';ctx.lineWidth=0.8*S;ctx.beginPath();ctx.moveTo(cx+wT-14*S,top-4*S);ctx.quadraticCurveTo(cx+wT+2*S,top-16*S,cx+wT-8*S,top+12*S);ctx.quadraticCurveTo(cx+wT+6*S,top,cx+wT-4*S,top+22*S);ctx.stroke();ctx.restore();}
 }
-
+ 
 function drawHighball(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/160,cx=W/2;
   const top=22*S,bot=H-20*S,wT=54*S,wB=46*S;
@@ -732,7 +756,7 @@ function drawHighball(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-wT+5*S,top+10*S);ctx.lineTo(cx-wT*0.45+4*S,top+(bot-top)*0.46);ctx.stroke();ctx.globalAlpha=1;
   if(garnish==='straw'){const swayTop=Math.sin(t*0.85)*5*S;const swayBot=Math.sin(t*0.85+0.7)*2*S;const bob=Math.sin(t*1.3)*2.8*S;const sx=cx+wT*0.46;drawStraw(ctx,sx+swayTop,top-20*S,sx+swayBot,liqY+3*S+bob,4.5*S);}
 }
-
+ 
 function drawMartini(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/200,cx=W/2;
   const rimY=24*S, tipY=Math.min(H*0.54,280*S), rimW=88*S;
@@ -752,7 +776,7 @@ function drawMartini(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.18;ctx.lineWidth=1.6*S;ctx.beginPath();ctx.moveTo(cx-rimW,rimY);ctx.lineTo(cx+rimW,rimY);ctx.stroke();ctx.globalAlpha=1;
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-rimW+8*S,rimY+10*S);ctx.lineTo(cx-rimW*0.35,rimY+(tipY-rimY)*0.6);ctx.stroke();ctx.globalAlpha=1;
 }
-
+ 
 function drawWine(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/200,cx=W/2;
   const bowlTop=22*S, neckY=Math.min(H*0.46,240*S), bowlMidY=bowlTop+(neckY-bowlTop)*0.55;
@@ -771,7 +795,7 @@ function drawWine(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.18;ctx.lineWidth=1.6*S;ctx.beginPath();ctx.moveTo(cx-rimW,bowlTop);ctx.lineTo(cx+rimW,bowlTop);ctx.stroke();ctx.globalAlpha=1;
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-rimW+6*S,bowlTop+14*S);ctx.bezierCurveTo(cx-bowlW+4*S,bowlMidY,cx-bowlW*0.5,bowlMidY+20*S,cx-neckW+4*S,neckY-10*S);ctx.stroke();ctx.globalAlpha=1;
 }
-
+ 
 function drawHurricane(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/180,cx=W/2;
   const top=20*S,bot=H-20*S,rimW=62*S,midW=34*S,baseW=50*S,midY=top+(bot-top)*0.4;
@@ -787,7 +811,7 @@ function drawHurricane(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-rimW+8*S,top+14*S);ctx.bezierCurveTo(cx-rimW*0.4,top+(bot-top)*0.14,cx-midW+4*S,midY-14*S,cx-midW+4*S,midY+10*S);ctx.stroke();ctx.globalAlpha=1;
   if(garnish==='straw'){const liqSurf=bot-(bot-top)*fillPct;const swayTop=Math.sin(t*0.82)*6*S;const swayBot=Math.sin(t*0.82+0.7)*2.5*S;const bob=Math.sin(t*1.2)*3*S;const sx=cx+rimW*0.48;drawStraw(ctx,sx+swayTop,top-22*S,sx+swayBot,liqSurf+3*S+bob,4.5*S);}
 }
-
+ 
 function drawFlute(ctx, canvas, fillPct, garnish, t){
   const W=canvas.width,H=canvas.height,S=W/200,cx=W/2;
   const top=20*S,bowlBot=H-85*S,rimW=26*S,baseW=14*S;
@@ -806,7 +830,7 @@ function drawFlute(ctx, canvas, fillPct, garnish, t){
   ctx.globalAlpha=0.18;ctx.lineWidth=1.6*S;ctx.beginPath();ctx.moveTo(cx-rimW,top);ctx.lineTo(cx+rimW,top);ctx.stroke();ctx.globalAlpha=1;
   ctx.globalAlpha=0.12;ctx.lineWidth=0.4*S;ctx.beginPath();ctx.moveTo(cx-rimW+4*S,top+10*S);ctx.lineTo(cx-rimW*0.4+2*S,top+(bowlBot-top)*0.5);ctx.stroke();ctx.globalAlpha=1;
 }
-
+ 
 function drawGlass(ctx, canvas, type, fillPct, garnish, t){
   switch(type){
     case 'coupe':     drawCoupe(ctx,canvas,fillPct,garnish,t);    break;
@@ -819,15 +843,15 @@ function drawGlass(ctx, canvas, type, fillPct, garnish, t){
     default:          drawHighball(ctx,canvas,fillPct,garnish,t);
   }
 }
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // HERO
 // ═══════════════════════════════════════════════
-
+ 
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger);
-
+ 
   function positionMixoDots() {
     const hero = document.getElementById('hero');
     const vw = hero.offsetWidth, vh = hero.offsetHeight;
@@ -845,28 +869,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   positionMixoDots();
   window.addEventListener('resize', positionMixoDots);
-
+ 
   gsap.timeline({ delay: .2 })
     .fromTo('.hero-logo',      { opacity:0, y:40 }, { opacity:1, y:0, duration:1.3, ease:'power3.out' })
     .fromTo('.hero-info-text', { opacity:0, y:20 }, { opacity:1, y:0, duration:1,   ease:'power2.out' }, '-=.7')
     .fromTo('.hero-captions',  { opacity:0 },       { opacity:1, duration:.8 }, '-=.4')
     .fromTo('.mixo-dot',       { scale:0 },         { scale:1, stagger:.12, duration:.5, ease:'back.out' }, '-=.5');
-
+ 
   gsap.to('.hero-bg', { yPercent:15, ease:'none', scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:true } });
   gsap.to('.hero-fg', { yPercent:-10, ease:'none', scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:true } });
 });
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // LOADER
 // ═══════════════════════════════════════════════
-
+ 
 (function () {
   const loader = document.getElementById('loader');
   const rect   = document.getElementById('loader-rect');
   const W = () => window.innerWidth;
   const H = () => window.innerHeight;
-
+ 
   gsap.timeline({
     onComplete: () => gsap.to(loader, { autoAlpha:0, duration:.25, onComplete:() => loader.remove() })
   })
@@ -878,49 +902,49 @@ document.addEventListener('DOMContentLoaded', () => {
     .to(loader, { backgroundColor:'transparent', duration:.01 }, '<.25')
     .to(rect,   { opacity:0, duration:.28, ease:'power2.out' }, '<.01');
 })();
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════
-
+ 
 ScrollTrigger.create({
   trigger: '#hero',
   start: 'bottom 80px',
   onEnter:     () => document.getElementById('nav').classList.add('solid'),
   onLeaveBack: () => document.getElementById('nav').classList.remove('solid'),
 });
-
+ 
 const burger = document.getElementById('navBurger');
 const navR   = document.querySelector('.nav-r');
 const navEl  = document.getElementById('nav');
-
+ 
 burger.addEventListener('click', () => { navEl.classList.toggle('menu-open'); navR.classList.toggle('open'); });
 navR.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navEl.classList.remove('menu-open'); navR.classList.remove('open'); }));
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // REVEALS
 // ═══════════════════════════════════════════════
-
+ 
 document.querySelectorAll('.js-line').forEach(el => {
   ScrollTrigger.create({ trigger:el, start:'top 90%', onEnter:() => el.classList.add('in') });
 });
 document.querySelectorAll('.js-fade').forEach((el, i) => {
   ScrollTrigger.create({ trigger:el, start:'top 88%', onEnter:() => setTimeout(() => el.classList.add('in'), (i % 6) * 60) });
 });
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // PHOTO GRID
 // ═══════════════════════════════════════════════
-
+ 
 (function initPhotoGrid() {
   const grid = document.querySelector('.photo-grid');
   if (!grid) return;
   const c = { c0:1, c1:1 };
   const r = { r0:260, r1:200 };
-
+ 
   function applyGrid() {
     grid.style.gridTemplateColumns = `${c.c0}fr ${c.c1}fr`;
     grid.style.gridTemplateRows    = `${r.r0}px ${r.r1}px`;
@@ -945,7 +969,7 @@ document.querySelectorAll('.js-fade').forEach((el, i) => {
     gsap.to(c, { c0:1, c1:1, duration:.5, ease:'power3.inOut', overwrite:true, onUpdate:applyGrid });
     gsap.to(r, { r0:260, r1:200, duration:.45, ease:'power3.inOut', overwrite:true, delay:.05, onUpdate:applyGrid });
   }
-
+ 
   grid.querySelectorAll('.photo-cell').forEach(cell => {
     cell.addEventListener('touchstart', (e) => { e.preventDefault(); cell.classList.contains('is-hovered') ? collapseAll() : (collapseAll(), expandCell(cell)); }, { passive:false });
     cell.addEventListener('mouseenter', () => { document.body.classList.add('cursor-hover'); expandCell(cell); });
@@ -953,12 +977,12 @@ document.querySelectorAll('.js-fade').forEach((el, i) => {
   });
   document.addEventListener('touchstart', (e) => { if (!e.target.closest('.photo-cell')) collapseAll(); }, { passive:true });
 })();
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // FERMETURE MOBILE
 // ═══════════════════════════════════════════════
-
+ 
 if (isTouchDevice()) {
   document.addEventListener('touchstart', (e) => {
     if (!e.target.closest('.cal-day')) {
@@ -978,14 +1002,14 @@ if (isTouchDevice()) {
     }
   }, { passive:true });
 }
-
-
+ 
+ 
 // ═══════════════════════════════════════════════
 // WORD-SMALL ANIMATION
 // ═══════════════════════════════════════════════
-
+ 
 const wordSmalls = document.querySelectorAll('.word-small');
-
+ 
 new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -1003,12 +1027,3 @@ new IntersectionObserver((entries) => {
   }, { threshold: 0.8 });
   wordSmalls.forEach(el => obs.observe(el));
 })();
-// AVANT (provoque reflow à chaque resize)
-window.addEventListener('resize', sizeCanvas);
-
-// APRÈS – debounce les measurements
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => sizeCanvas(), 150);
-});
